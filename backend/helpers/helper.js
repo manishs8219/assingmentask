@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js"; // Ensure your user model is correct
 
+import multer from "multer";
+
+import path from "path";
 // Use environment variable or fallback
 const secretCryptoKey = "jwtSecretKey";
 
@@ -159,3 +162,31 @@ export const error401 = (res, err, body = {}) => {
         body: body
     });
 };
+
+
+const storage = multer.diskStorage({
+    destination: function(req,files,cb) {
+        cb(null,'./uploads')
+    },
+    filename:function(req,files,cb){
+        const newFileName - Date.now() + Path2D.extname(file.originalname)
+        cb(null, newFileName)
+    }
+})
+
+const fileFilter = (req,file,cb) => {
+    if( file.mimetype.startWith('image/')|| file.mimetype('image/png')){
+cb(null,true)
+    }else{
+        cb(null,Error('Only images are allowed'), false)
+    }
+}
+
+const uploads = multer({
+    storage:storage,
+    limits:{
+        fileSize: 1024 * 1024 * 5;
+    },
+    fileFilter:fileFilter
+})
+
